@@ -1,0 +1,609 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,float}
+\usepackage[export]{adjustbox}
+\usepackage{tabularx}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{eso-pic}
+\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{longtable}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\AddToShipoutPictureBG{%
+\begin{tikzpicture}[overlay,remember picture]
+\draw[line width=4pt]
+    ($ (current page.north west) + (1cm,-1cm) $)
+    rectangle
+    ($ (current page.south east) + (-1cm,1cm) $);
+\draw[line width=1.5pt]
+    ($ (current page.north west) + (1.2cm,-1.2cm) $)
+    rectangle
+    ($ (current page.south east) + (-1.2cm,1.2cm) $);
+\end{tikzpicture}
+}
+\author{\textbf{Pratik Parmar} 2016UCS0049}
+\date{}
+\title{\textbf{CSP362: Database Management System\\ Assignment 1}}
+\begin{document}
+\maketitle
+\newpage
+\section*{Problem 1}
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\ttfamily,
+           numbers=left,
+           numberstyle=\tiny,
+           commentstyle=\color{gray}
+        ]
+        
+\end{lstlisting}
+\subsection*{Entities \& their Relationships}
+\begin{enumerate}
+\item User
+\begin{enumerate}
+\item Borrows Book
+\item Borrows Periodical
+\item Has Messages
+\end{enumerate}
+\item Author
+\begin{enumerate}
+\item Has Paper
+\item Has Book
+\end{enumerate}
+\item Book
+\begin{enumerate}
+\item Written By Authors
+\item Has Tag
+\item Borrowed by User
+\item Has Publisher
+\end{enumerate}
+\item Paper
+\begin{enumerate}
+\item Has Author
+\item Part of Periodical
+\end{enumerate}
+\item Periodical
+\begin{enumerate}
+\item Borrowed by User
+\item Has Paper
+\item Has Publisher
+\item Has Tag
+\end{enumerate}
+\item Tag
+\begin{enumerate}
+\item Relates Book
+\item Relates Periodical
+\end{enumerate}
+\item Message
+\begin{enumerate}
+\item For User
+\end{enumerate}
+\item Publisher
+\begin{enumerate}
+\item Has Books
+\item Has Periodicals
+\end{enumerate}
+\end{enumerate}
+\section*{Problem 2}
+Database has been Normalized to 2nd Normalization Form.
+\section*{Problem 3}
+\subsection*{Implementation of Various Tables in Database}
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           numberstyle=\tiny,
+           commentstyle=\color{gray}
+        ]
+        Create Database LMS_0049;
+        
+        USE LMS_0049;
+
+        CREATE TABLE `User` (
+ 		`Id` varchar(20) NOT NULL,
+  		`Name` varchar(50) NOT NULL,
+  		`Username` varchar(50) NOT NULL,
+  		`Password` varchar(20) NOT NULL,
+  		`Email` varchar(50) NOT NULL,
+  		PRIMARY KEY (`Id`),
+  		UNIQUE KEY `Username` (`Username`)
+	);
+        
+        CREATE TABLE `Message` (
+ 		`Id` varchar(20) NOT NULL,
+  		`Text` varchar(200) NOT NULL,
+  		`UserId` varchar(20) NOT NULL,
+  		PRIMARY KEY (`Id`),
+  		KEY `UserId` (`UserId`),
+  		CONSTRAINT `Message_ibfk_1` 
+  		FOREIGN KEY (`UserId`) REFERENCES `User` (`Id`)
+	);
+	
+	CREATE TABLE `Publisher` (
+ 		`Id` varchar(30) NOT NULL,
+  		`Name` varchar(50) NOT NULL,
+  		PRIMARY KEY (`Id`)
+	);
+
+	CREATE TABLE `Book` (
+  		`Id` varchar(20) NOT NULL,
+  		`Title` varchar(50) NOT NULL,
+  		`Year` varchar(10) DEFAULT NULL,
+  		`Isbn` varchar(30) DEFAULT NULL,
+  		`Pages` int(11) DEFAULT '0',
+  		`UserId` varchar(20) DEFAULT NULL,
+  		`PublisherId` varchar(20) DEFAULT NULL,
+  		`Issue_date` date DEFAULT NULL,
+  		PRIMARY KEY (`Id`),
+  		KEY `UserId` (`UserId`),
+  		KEY `PublisherId` (`PublisherId`),
+  		CONSTRAINT `Book_ibfk_1` 
+  		FOREIGN KEY (`UserId`) REFERENCES `User` (`Id`),
+  		CONSTRAINT `Book_ibfk_2` 
+  		FOREIGN KEY (`PublisherId`) REFERENCES `Publisher` (`Id`)
+	);
+	
+	CREATE TABLE `Author` (
+  		`Id` varchar(20) NOT NULL,
+  		`Name` varchar(50) NOT NULL,
+  		`PaperId` varchar(20) DEFAULT NULL,
+  		`BookId` varchar(20) DEFAULT NULL,
+  		PRIMARY KEY (`Id`),
+  		KEY `BookId` (`BookId`),
+  		KEY `PaperId` (`PaperId`),
+  		CONSTRAINT `Author_ibfk_1` 
+  		FOREIGN KEY (`BookId`) REFERENCES `Book` (`Id`),
+		CONSTRAINT `Author_ibfk_2`
+		FOREIGN KEY (`PaperId`) REFERENCES `Paper` (`Id`)
+	);
+	
+	CREATE TABLE `Periodical` (
+  		`Id` varchar(20) NOT NULL,
+  		`Title` varchar(50) NOT NULL,
+  		`Year` varchar(10) DEFAULT NULL,
+  		`Volume` int(11) NOT NULL,
+  		`Isbn` varchar(30) NOT NULL,
+  		`UserId` varchar(20) DEFAULT NULL,
+  		`PublisherId` varchar(20) DEFAULT NULL,
+  		PRIMARY KEY (`Id`),
+  		KEY `UserId` (`UserId`),
+  		KEY `PublisherId` (`PublisherId`),
+  		CONSTRAINT `Periodical_ibfk_1`
+  		FOREIGN KEY (`UserId`) REFERENCES `User` (`Id`),
+		CONSTRAINT `Periodical_ibfk_2` 
+		FOREIGN KEY (`PublisherId`) REFERENCES `Publisher` (`Id`)
+	);
+	
+	CREATE TABLE `Paper` (
+  		`Id` varchar(20) NOT NULL,
+  		`Name` varchar(50) NOT NULL,
+  		`PeriodicalId` varchar(20) DEFAULT NULL,
+  		PRIMARY KEY (`Id`),
+  		KEY `PeriodicalId` (`PeriodicalId`),
+  		CONSTRAINT `Paper_ibfk_1` 
+  		FOREIGN KEY (`PeriodicalId`) REFERENCES `Periodical` (`Id`)
+	);
+	
+	CREATE TABLE `Tag` (
+ 		`Id` varchar(20) NOT NULL,
+  		`Value` varchar(50) NOT NULL,
+  		PRIMARY KEY (`Id`)
+	);
+	
+	CREATE TABLE `BookTag` (
+  		`BookId` varchar(20) NOT NULL,
+  		`TagId` varchar(20) NOT NULL,
+  		PRIMARY KEY (`BookId`,`TagId`),
+  		KEY `TagId` (`TagId`),
+  		CONSTRAINT `BookTag_ibfk_1` 
+  		FOREIGN KEY (`BookId`) REFERENCES `Book` (`Id`),
+  		CONSTRAINT `BookTag_ibfk_2` 
+  		FOREIGN KEY (`TagId`) REFERENCES `Tag` (`Id`)
+	);
+	
+	CREATE TABLE `PeriodicalTag` (
+  		`PeriodicalId` varchar(20) NOT NULL,
+  		`TagId` varchar(20) NOT NULL,
+  		PRIMARY KEY (`PeriodicalId`,`TagId`),
+  		KEY `TagId` (`TagId`),
+  		CONSTRAINT `PeriodicalTag_ibfk_1` 
+  		FOREIGN KEY (`PeriodicalId`) REFERENCES `Periodical` (`Id`),
+  		CONSTRAINT `PeriodicalTag_ibfk_2` 
+  		FOREIGN KEY (`TagId`) REFERENCES `Tag` (`Id`)
+	);
+	
+	Desc User;	
+	+-----------+--------------------------------------+------+-----+---------+
+	| Field     | Type                                 | Null | Key | Default |
+	+-----------+--------------------------------------+------+-----+---------+
+	| Id        | varchar(20)                          | NO   | PRI | NULL    |
+	| Name      | varchar(50)                          | NO   |     | NULL    |
+	| Username  | varchar(50)                          | NO   | UNI | NULL    |
+	| Password  | varchar(20)                          | NO   |     | NULL    |
+	| Email     | varchar(50)                          | NO   |     | NULL    |
+	+-----------+--------------------------------------+------+-----+---------+
+ 		        
+	Desc Publisher
+	+-------+-------------+------+-----+---------+-------+
+	| Field | Type        | Null | Key | Default | Extra |
+	+-------+-------------+------+-----+---------+-------+
+	| Id    | varchar(30) | NO   | PRI | NULL    |       |
+	| Name  | varchar(50) | NO   |     | NULL    |       |
+	+-------+-------------+------+-----+---------+-------+
+
+	Desc Book
+	+-------------+--------------------------+------+-----+---------+-------+
+	| Field       | Type                     | Null | Key | Default | Extra |
+	+-------------+--------------------------+------+-----+---------+-------+
+	| Id          | varchar(20)              | NO   | PRI | NULL    |       |
+	| Title       | varchar(50)              | NO   |     | NULL    |       |
+	| Year        | varchar(10)              | YES  |     | NULL    |       |
+	| Isbn        | varchar(30)              | YES  |     | NULL    |       |
+	| Pages       | int(11)                  | YES  |     | 0       |       |
+	| UserId      | varchar(20)              | YES  | MUL | NULL    |       |
+	| PublisherId | varchar(20)              | YES  | MUL | NULL    |       |
+	| Issue_date  | date                     | YES  |     | NULL    |       |
+	+-------------+--------------------------+------+-----+---------+-------+
+	
+	Desc Tag
+	+-------+-------------+------+-----+---------+-------+
+	| Field | Type        | Null | Key | Default | Extra |
+	+-------+-------------+------+-----+---------+-------+
+	| Id    | varchar(20) | NO   | PRI | NULL    |       |
+	| Value | varchar(50) | NO   |     | NULL    |       |
+	+-------+-------------+------+-----+---------+-------+
+
+	Desc Periodical
+	+-------------+-------------+------+-----+---------+-------+
+	| Field       | Type        | Null | Key | Default | Extra |
+	+-------------+-------------+------+-----+---------+-------+
+	| Id          | varchar(20) | NO   | PRI | NULL    |       |
+	| Title       | varchar(50) | NO   |     | NULL    |       |
+	| Year        | varchar(10) | YES  |     | NULL    |       |
+	| Volume      | int(11)     | NO   |     | NULL    |       |
+	| Isbn        | varchar(30) | NO   |     | NULL    |       |
+	| UserId      | varchar(20) | YES  | MUL | NULL    |       |
+	| PublisherId | varchar(20) | YES  | MUL | NULL    |       |
+	+-------------+-------------+------+-----+---------+-------+
+
+	Desc Paper
+	+--------------+-------------+------+-----+---------+-------+
+	| Field        | Type        | Null | Key | Default | Extra |
+	+--------------+-------------+------+-----+---------+-------+
+	| Id           | varchar(20) | NO   | PRI | NULL    |       |
+	| Name         | varchar(50) | NO   |     | NULL    |       |
+	| PeriodicalId | varchar(20) | YES  | MUL | NULL    |       |
+	+--------------+-------------+------+-----+---------+-------+
+
+	Desc Author
+	+---------+-------------+------+-----+---------+-------+
+	| Field   | Type        | Null | Key | Default | Extra |
+	+---------+-------------+------+-----+---------+-------+
+	| Id      | varchar(20) | NO   | PRI | NULL    |       |
+	| Name    | varchar(50) | NO   |     | NULL    |       |
+	| PaperId | varchar(20) | YES  | MUL | NULL    |       |
+	| BookId  | varchar(20) | YES  | MUL | NULL    |       |
+	+---------+-------------+------+-----+---------+-------+
+
+	Desc Message
+	+--------+--------------+------+-----+---------+-------+
+	| Field  | Type         | Null | Key | Default | Extra |
+	+--------+--------------+------+-----+---------+-------+
+	| Id     | varchar(20)  | NO   | PRI | NULL    |       |
+	| Text   | varchar(200) | NO   |     | NULL    |       |
+	| UserId | varchar(20)  | NO   | MUL | NULL    |       |
+	+--------+--------------+------+-----+---------+-------+
+
+	Desc BookTag
+	+--------+-------------+------+-----+---------+-------+
+	| Field  | Type        | Null | Key | Default | Extra |
+	+--------+-------------+------+-----+---------+-------+
+	| BookId | varchar(20) | NO   | PRI | NULL    |       |
+	| TagId  | varchar(20) | NO   | PRI | NULL    |       |
+	+--------+-------------+------+-----+---------+-------+
+
+	Desc PeriodicalTag
+	+--------------+-------------+------+-----+---------+-------+
+	| Field        | Type        | Null | Key | Default | Extra |
+	+--------------+-------------+------+-----+---------+-------+
+	| PeriodicalId | varchar(20) | NO   | PRI | NULL    |       |
+	| TagId        | varchar(20) | NO   | PRI | NULL    |       |
+	+--------------+-------------+------+-----+---------+-------+
+\end{lstlisting}
+\textbf{100 Records for Book and User Table}\\
+Data has been inserted using loop from frontend.\\
+\textbf{Add User\_Type Attribute in User Table}\\
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           numberstyle=\tiny,
+           commentstyle=\color{gray}
+        ]
+        Alter table User
+        Add Column User_Type enum("Student","Faculty","Staff","Guest") not null;
+\end{lstlisting}
+\textbf{The students, faculties, staff members and guests are allowed a maximum of three, six,
+four and two books for 15, 30, 30 and 7 days respectively.}\\
+This Feature has been incorporated in frontend on LMS Application.\\
+\section*{Problem 4}
+\subsubsection*{List All tables and their attributes}
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           numberstyle=\tiny,
+           commentstyle=\color{gray}
+        ]
+        	Show tables;
+        	+--------------------+
+		| Tables_in_LMS_0049 |
+		+--------------------+
+		| Author             |
+		| Book               |
+		| BookTag            |
+		| Message            |
+		| Paper              |
+		| Periodical         |
+		| PeriodicalTag      |
+		| Publisher          |
+		| Tag                |
+		| User               |
+		+--------------------+
+\end{lstlisting} 
+Attributes of this table are already been shown.
+\subsubsection*{Display the total inventory in the ‘LMS’.}
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           numberstyle=\tiny,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select count(*) from User;
+		+----------+
+		| count(*) |
+		+----------+
+		|      101 |
+		+----------+
+		1 row in set (0.00 sec)
+		
+	mysql> Select count(*) from Book;
+		+----------+
+		| count(*) |
+		+----------+
+		|      201 |
+		+----------+
+		1 row in set (0.00 sec)
+		
+	mysql> Select count(*) from Author;
+		+----------+
+		| count(*) |
+		+----------+
+		|      20  |
+		+----------+
+		1 row in set (0.00 sec)
+		
+	mysql> Select count(*) from Periodical;
+		+----------+
+		| count(*) |
+		+----------+
+		|        1 |
+		+----------+
+		1 row in set (0.00 sec)
+\end{lstlisting}
+\subsubsection*{List the number of available books requested by a user.}
+In this program, If Issue\_date field is null that means a  book has not been issued to anyone.
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select count(*) from Book where Issue_date is null;
+		+----------+
+		| count(*) |
+		+----------+
+		|      199 |
+		+----------+
+		1 row in set (0.00 sec)	
+\end{lstlisting}
+\subsubsection*{List the author(s) of a given (queried) book.}
+Let the name of queried book is 'Book1'.
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select Author.Id, Author.Name from Book,Author 
+        	where Author.BookId=Book.Id and Book.Title="Book1";
+		+----+---------+
+		| Id | Name    |
+		+----+---------+
+		| A1 | Author1 |
+		| A2 | Author2 |
+		| A4 | Author4 |
+		| A5 | Author5 |
+		+----+---------+
+		4 rows in set (0.03 sec)	
+\end{lstlisting}
+\subsubsection*{List the total number of books issued for a user.}
+Let the name of queried user is 'User2'.
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select Book.* from Book,User 
+        	where Book.UserId=User.Id and User.Name="User2";
+	+----+-------+------+-----+-----+-------+-----------+----------+---------+
+	| Id | Title | Year |Isbn |Pages|UserId|PublisherId|Issue_date|Discipline|
+	+----+-------+------+-----+-----+------+-----------+----------+----------+
+	| B1 | Book1 | 2018 |12324| 204 |U2    | P2        |2019-02-20|CSE       |
+	| B2 | Book2 | 2018 |12324| 407 |U2    | P3        |2019-02-20|CSE       |
+	+----+-------+------+-----+-----+------+-----------+----------+----------+
+	2 rows in set (0.01 sec)
+		
+	mysql> Select count(*) "# of Issued Books" from Book,User where Book.UserId=User.Id and User.Name="User2";
+	+-------------------+
+	| # of Issued Books |
+	+-------------------+
+	|                 2 |
+	+-------------------+
+	1 row in set (0.00 sec)
+\end{lstlisting}
+\subsubsection*{List the number of issued and returned books on daily basis (for a given day/period).}
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select Count(*) from Book where Issue_date=curdate();
+	+----------+
+	| Count(*) |
+	+----------+
+	|        1 |
+	+----------+
+	1 row in set (0.00 sec)
+
+	mysql> Select Count(*) from Book where Return_date=curdate();
+	+----------+
+	| Count(*) |
+	+----------+
+	|        1 |
+	+----------+
+	1 row in set (0.00 sec)
+
+	mysql> Select Count(*) from Book where Issue_date between curdate() and "20190101"; 
+	+----------+
+	| Count(*) |
+	+----------+
+	|        0 |
+	+----------+
+	1 row in set (0.00 sec)
+\end{lstlisting}
+\subsubsection*{List the users with book details if there are any dues.}
+This Feature has been implemented in Software.
+\subsubsection*{Check whether a user is allowed to borrow a book or not.}
+This Feature has been implemented in Software.
+\subsubsection*{List the newly added book records for a given period.}
+To query this, we need to add a new column to determine the date of adding Book. Let the name of Column be EntryDate.
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select Book.* from Book 
+        	where EntryDate=curdate();
+\end{lstlisting}
+\subsubsection*{Display the user name and the books issued to them..}
+To query this, we need to add a new column to determine the date of adding Book. Let the name of Column be EntryDate.
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select Name,Book.Title from User,Book where Book.UserId=User.Id;
+	+---------------+--------+
+	| Name          | Title  |
+	+---------------+--------+
+	| Pratik Parmar | Book10 |
+	+---------------+--------+
+	1 row in set (0.00 sec)
+\end{lstlisting}
+\subsubsection*{Display all the books with all details issued to a user.}
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Select Book.* from Book,User where Book.UserId=User.Id and User.Name="Pratik Parmar";
++-----+--------+------+------+-------+--------+-------------+------------+------------+
+| Id  | Title  | Year | Isbn | Pages | UserId | PublisherId | Issue_date | Discipline |
++-----+--------+------+------+-------+--------+-------------+------------+------------+
+| B10 | Book10 | 2017 | 1324 |  1011 | U101   | P1          | 2019-02-24 | CSE        |
++-----+--------+------+------+-------+--------+-------------+------------+------------+
+1 row in set (0.00 sec)
+\end{lstlisting}
+\section*{Problem 5}
+\begin{figure}[H]
+\includegraphics[width=450pt,center,keepaspectratio]{p1.jpg}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=450pt,center,keepaspectratio]{p2.jpg}
+\end{figure}
+\section*{Problem 6}
+Calculation of Fine is done in Software.  A function has been created in SQL to calculate number of days from a given date excluding weekends.
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        CREATE FUNCTION TOTAL_WEEKDAYS(date1 DATE, date2 DATE)
+	RETURNS INT
+	RETURN ABS(DATEDIFF(date2, date1)) + 1
+    	 - ABS(DATEDIFF(ADDDATE(date2, INTERVAL 1 - DAYOFWEEK(date2) DAY),
+                    ADDDATE(date1, INTERVAL 1 - DAYOFWEEK(date1) DAY))) / 7 * 2
+    	 - (DAYOFWEEK(IF(date1 < date2, date1, date2)) = 1)
+    	 - (DAYOFWEEK(IF(date1 > date2, date1, date2)) = 7);
+\end{lstlisting}
+\section*{Problem 7}
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> Alter table Book
+	    -> Add Column Discipline enum("CS","EE","ME","CE","Math","Phy","Hindi");
+\end{lstlisting}
+\section*{Problem 8}
+Check Software.
+\section*{Problem 9}
+A Separate table Reserve has been created for this problem with 3 attributes 'UserId','BookId' and 'Date'.
+\begin{lstlisting}[
+           language=SQL,
+           showspaces=false,
+           basicstyle=\tiny,
+           numbers=left,
+           commentstyle=\color{gray}
+        ]
+        mysql> desc Reserve;
+	+--------+-------------+------+-----+---------+-------+
+	| Field  | Type        | Null | Key | Default | Extra |
+	+--------+-------------+------+-----+---------+-------+
+	| UserId | varchar(20) | NO   | PRI | NULL    |       |
+	| BookId | varchar(20) | NO   | PRI | NULL    |       |
+	| Date   | date        | NO   |     | NULL    |       |
+	+--------+-------------+------+-----+---------+-------+
+	3 rows in set (0.00 sec)
+\end{lstlisting}
+Book automatically gets issued to person who reserved it based on first come first serve basis when that book is returned.
+\end{document}
