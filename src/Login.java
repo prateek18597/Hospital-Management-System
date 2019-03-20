@@ -115,23 +115,9 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username=jTextField1.getText().trim();
         String password=jPasswordField1.getText().trim();
-        Connection myConn=null;
-        Statement stat=null;
-        ResultSet rs=null;
         try
         {
-            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS_0049",Info.user,Info.pass);
-            stat=myConn.createStatement();
-            rs=stat.executeQuery("Select  Username, Password from User where Username='"+username+"' and Password='"+password+"'");
-            if(rs.next())
-            {
-                rs=stat.executeQuery("Select Id from User where Username='"+username+"'");
-                if(rs.next())
-                {
-                    Info.currentUserId=rs.getString(1);
-                }
-                JOptionPane.showMessageDialog(rootPane, "Login Successful");
-                if(username.equals("u1"))
+                if(username.equals("admin") && password.equals("admin"))
                 {
                     new LibHome().setVisible(true);
                 }
@@ -139,9 +125,7 @@ public class Login extends javax.swing.JFrame {
                 {
                     new UserHome().setVisible(true);
                 }
-            }
-            
-            this.setVisible(false);
+            this.dispose();
         }
         catch(Exception e)
         {

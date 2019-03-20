@@ -54,6 +54,8 @@ public class AddStaff extends javax.swing.JFrame {
         endHourSpinner = new javax.swing.JSpinner();
         endMinSpinner = new javax.swing.JSpinner();
         deptTf = new javax.swing.JTextField();
+        roomTf = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -90,13 +92,15 @@ public class AddStaff extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(workingdayList);
 
-        startHourSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 23, 1));
+        startHourSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 23, 1));
 
-        startMinSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 59, 1));
+        startMinSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
 
-        endHourSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 23, 1));
+        endHourSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 23, 1));
 
-        endMinSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 59, 1));
+        endMinSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, 59, 1));
+
+        jLabel10.setText("Room");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -113,9 +117,11 @@ public class AddStaff extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel1)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9))
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(roomTf)
                     .addComponent(firstnameTf)
                     .addComponent(typeCb, 0, 200, Short.MAX_VALUE)
                     .addComponent(lastnameTf)
@@ -163,13 +169,16 @@ public class AddStaff extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(endHourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(endMinSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(endHourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(endMinSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(roomTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -249,9 +258,11 @@ public class AddStaff extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -264,6 +275,12 @@ public class AddStaff extends javax.swing.JFrame {
         lastnameTf.setText(null);
         contactnumberTf.setText(null);
         deptTf.setText(null);
+        workingdayList.setSelectedIndices(null);
+        startHourSpinner.setValue(0);
+        startMinSpinner.setValue(0);
+        endHourSpinner.setValue(0);
+        roomTf.setText(null);
+        endMinSpinner.setValue(0);
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -272,26 +289,48 @@ public class AddStaff extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String name=firstnameTf.getText().trim();
-        String password=deptTf.getText().trim();
-        String username=lastnameTf.getText();
-        String email=contactnumberTf.getText();
+        
+        String firstname=firstnameTf.getText().trim();
+        String dept=deptTf.getText().trim();
+        String lastname=lastnameTf.getText();
+        String contactnumber=contactnumberTf.getText();
         String type=(String)typeCb.getSelectedItem();
+       
+        int startHour=(Integer)(startHourSpinner.getValue());
+        int startMin=(Integer)(startMinSpinner.getValue());
+       
+        String startTime=startHour+":"+startMin+":00";
+        int endHour=(Integer)(endHourSpinner.getValue());
+        int endMin=(Integer)(endMinSpinner.getValue());
+        String endTime=endHour+":"+endMin+":00";
+        String room="null";
+        StringBuffer days=new StringBuffer("0000000");
+        int[] day=workingdayList.getSelectedIndices();
+        if(!roomTf.getText().trim().equals(null))
+            room=roomTf.getText().trim();
+        for(int i=0;i<day.length;i++)
+        {
+            days.setCharAt(day[i],'1');
+        }
+        String Days=new String(days);
         Connection myConn=null;
         Statement stat=null;
         ResultSet rs=null;
+        
         try
         {
-            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS_0049",Info.user,Info.pass);
+            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
             stat=myConn.createStatement();
-            rs=stat.executeQuery("Select  count(* )from User");
+            rs=stat.executeQuery("Select  count(*) from Staff");
             int count=0;
             if(rs.next())
             {
                 count=Integer.parseInt(rs.getString(1));
             }
             count++;
-            int status=stat.executeUpdate("insert into User values('U"+count+"','"+name+"','"+username+"','"+password+"','"+email+"','"+type+"')");
+            String query="insert into Staff values('S"+count+"','"+firstname+"','"+lastname+"','"+type+"','"+dept+"','"+contactnumber+"','"+room+"','"+startTime+"','"+endTime+"','"+Days+"','No')";
+            System.out.println(query);
+            int status=stat.executeUpdate(query);
             JOptionPane.showMessageDialog(rootPane, "User Added Successfully.");
             this.reset();
         }
@@ -356,6 +395,7 @@ public class AddStaff extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -369,6 +409,7 @@ public class AddStaff extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField lastnameTf;
+    private javax.swing.JTextField roomTf;
     private javax.swing.JSpinner startHourSpinner;
     private javax.swing.JSpinner startMinSpinner;
     private javax.swing.JComboBox<String> typeCb;
