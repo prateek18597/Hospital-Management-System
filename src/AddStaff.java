@@ -1,9 +1,13 @@
 
+import java.awt.Color;
+import java.awt.Container;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import oracle.jrockit.jfr.JFR;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,7 +25,9 @@ public class AddStaff extends javax.swing.JFrame {
      * Creates new form AddUser
      */
     public AddStaff() {
+        
         initComponents();
+//        this.getContentPane().setBackground(Color.yellow);
     }
 
     /**
@@ -66,6 +72,12 @@ public class AddStaff extends javax.swing.JFrame {
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(java.awt.Color.cyan);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel2.setText("First Name");
 
@@ -346,6 +358,13 @@ public class AddStaff extends javax.swing.JFrame {
         this.setVisible(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.getContentPane().setBackground(Color.cyan);
+        jPanel1.setBackground(Color.cyan);
+        jPanel2.setBackground(Color.cyan);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

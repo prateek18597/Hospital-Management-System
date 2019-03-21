@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -54,6 +55,11 @@ public class AddPatient extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel2.setText("First Name");
 
@@ -247,7 +253,7 @@ public class AddPatient extends javax.swing.JFrame {
         
         try
         {
-            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS_0049",Info.user,Info.pass);
+            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
             stat=myConn.createStatement();
             rs=stat.executeQuery("Select count(*) from Patient");
             int count=0;
@@ -258,7 +264,12 @@ public class AddPatient extends javax.swing.JFrame {
             
             count++;
             int status=stat.executeUpdate("insert into Patient values('P"+count+"','"+firstname+"','"+lastname+"',"+age+",'"+gender+"','"+contactno+"')");
-            JOptionPane.showMessageDialog(rootPane, "Successfully Added Patient in Database");
+            JOptionPane.showMessageDialog(rootPane, "Successfully Added Patient in Database. Patient Id is P"+count+".");
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Appoint a Doctor?","Yes",dialogButton);
+            if(dialogResult == JOptionPane.YES_OPTION){
+                System.out.println("Switch to Appoint Doctor Page.");
+            }
             this.reset();
         }
         catch(Exception e)
@@ -285,24 +296,17 @@ System.exit(0);        // TODO add your handling code here:
 
     private void contactnumberTfKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contactnumberTfKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyChar()>='0' && evt.getKeyChar()<='9')
-        {
-        }
-        else
-        {
-            evt.consume();
-        }
     }//GEN-LAST:event_contactnumberTfKeyPressed
 
     private void ageTfKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ageTfKeyPressed
-if(evt.getKeyChar()>='0' && evt.getKeyChar()<='9')
-        {
-        }
-        else
-        {
-            evt.consume();
-        }        // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_ageTfKeyPressed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.getContentPane().setBackground(Color.cyan);
+        jPanel1.setBackground(Color.cyan);
+        jPanel2.setBackground(Color.cyan);        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
