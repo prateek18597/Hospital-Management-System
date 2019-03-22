@@ -604,12 +604,14 @@ public class AppointDoctor extends javax.swing.JFrame {
     }//GEN-LAST:event_bookBtnActionPerformed
 
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
-System.exit(0);        // TODO add your handling code here:
+    
+        System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_exitBtnActionPerformed
 
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
-this.dispose();
-new LibHome().setVisible(true);
+    
+        this.dispose();
+        new LibHome().setVisible(true);
 // TODO add your handling code here:
     }//GEN-LAST:event_homeBtnActionPerformed
 
@@ -620,7 +622,9 @@ new LibHome().setVisible(true);
         timeMinSpinner.setValue(0);
         durationHourSpinner.setValue(0);
         durationMinSpinner.setValue(0);
-        
+        daySpinner.setValue(1);
+        monthSpinner.setValue(1);
+        yearSpinner.setValue(2019);
     }//GEN-LAST:event_resetBtnActionPerformed
 
     /**

@@ -1,3 +1,10 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,7 +23,8 @@ public class Doctor extends javax.swing.JFrame {
     public Doctor() {
         initComponents();
     }
-
+    String recordId="";
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,6 +55,11 @@ public class Doctor extends javax.swing.JFrame {
         homeBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -92,10 +105,25 @@ public class Doctor extends javax.swing.JFrame {
         });
 
         clearBtn.setText("Clear");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
 
         enterBtn.setText("Enter");
+        enterBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterBtnActionPerformed(evt);
+            }
+        });
 
         homeBtn.setText("Home");
+        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,6 +211,99 @@ public class Doctor extends javax.swing.JFrame {
     private void patientAgeTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientAgeTfActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_patientAgeTfActionPerformed
+
+    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_homeBtnActionPerformed
+
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        // TODO add your handling code here:
+        patientNameTf.setText(null);
+        patientAgeTf.setText(null);
+        genderTf.setText(null);
+        symptomTa.setText(null);
+        diseaseTf.setText(null);
+        medicineTa.setText(null);
+        this.start();
+    }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void start()
+    {
+        recordId=JOptionPane.showInputDialog("Enter Record Id.");
+        try
+        {
+            Connection myConn=null;
+            Statement stat=null;
+            ResultSet rs=null;
+            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049", Info.user, Info.pass);
+            stat=myConn.createStatement();
+            String query="Select concat(FirstName,' ',LastName),Age,Gender from Record,Patient where PatientId=Id and RecordId='"+recordId+"'";
+            rs=stat.executeQuery(query);
+            String name="",age="",gender="";
+            if(rs.next())
+            {
+                name=rs.getString(1);
+                age=rs.getString(2);
+                gender=rs.getString(3);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(rootPane,"This RecordId does not exists.");
+            }
+            patientAgeTf.setText(age);
+            patientNameTf.setText(name);
+            genderTf.setText(gender);
+            query="Select * from Symptoms where RecordId='"+recordId+"'";
+            rs=stat.executeQuery(query);
+            String symptoms="";
+            int flag=0;
+            while(rs.next())
+            {
+                flag=1;
+                symptoms+=rs.getString(2)+"\n";
+            }
+            if(flag==0)
+            {
+                JOptionPane.showMessageDialog(rootPane,"No Symptoms found for this Record. Please enter symptoms first.");
+            }
+            symptomTa.setText(symptoms);
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        this.start();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void enterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBtnActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            Connection myConn=null;
+            Statement stat=null;
+            ResultSet rs=null;
+            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049", Info.user, Info.pass);
+            stat=myConn.createStatement();
+            String Disease="",Medicine="";
+            Disease=diseaseTf.getText();
+            Medicine=medicineTa.getText();
+            
+            String[] medi=Medicine.split(",");
+            for(int i=0;i<medi.length;i++)
+            {
+                stat.executeUpdate("Insert into Prescription values('"+recordId+"','"+medi[i]+"')");
+            }
+            stat.executeUpdate("Update Record set Disease='"+Disease+"' where RecordId='"+recordId+"'");
+            JOptionPane.showMessageDialog(rootPane,"Successfully entered Prescription.");
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_enterBtnActionPerformed
 
     /**
      * @param args the command line arguments
