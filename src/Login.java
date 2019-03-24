@@ -117,15 +117,32 @@ public class Login extends javax.swing.JFrame {
         String password=jPasswordField1.getText().trim();
         try
         {
-                if(username.equals("admin") && password.equals("admin"))
+            Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049", Info.user, Info.pass);
+            Statement stat=conn.createStatement();
+            ResultSet rs=null;
+            String query="Select Type from Login where UserId='"+username+"' and Password='"+password+"'";
+            rs=stat.executeQuery(query);
+            Info.UserId=username;
+            if(rs.next())
+            {
+                Info.Type=rs.getString(1);
+                if(Info.Type.equalsIgnoreCase("Admin"))
                 {
                     new LibHome().setVisible(true);
+                    this.dispose();
                 }
                 else
                 {
                     new UserHome().setVisible(true);
+                    this.dispose();
                 }
-            this.dispose();
+            }
+            else
+            {
+                jTextField1.setText(null);
+                jPasswordField1.setText(null);
+                JOptionPane.showMessageDialog(rootPane,"Wrong Username or Password.");
+            }
         }
         catch(Exception e)
         {

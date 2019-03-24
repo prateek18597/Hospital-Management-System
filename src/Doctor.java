@@ -224,12 +224,54 @@ public class Doctor extends javax.swing.JFrame {
         symptomTa.setText(null);
         diseaseTf.setText(null);
         medicineTa.setText(null);
-        this.start();
+        recordId=JOptionPane.showInputDialog("Enter Record Id.");
+        try
+        {
+            Connection myConn=null;
+            Statement stat=null;
+            ResultSet rs=null;
+            myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049", Info.user, Info.pass);
+            stat=myConn.createStatement();
+            String query="Select concat(FirstName,' ',LastName),Age,Gender from Record,Patient where PatientId=Id and RecordId='"+recordId+"'";
+            rs=stat.executeQuery(query);
+            String name="",age="",gender="";
+            if(rs.next())
+            {
+                name=rs.getString(1);
+                age=rs.getString(2);
+                gender=rs.getString(3);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(rootPane,"This RecordId does not exists.");
+            }
+            patientAgeTf.setText(age);
+            patientNameTf.setText(name);
+            genderTf.setText(gender);
+            query="Select * from Symptoms where RecordId='"+recordId+"'";
+            rs=stat.executeQuery(query);
+            String symptoms="";
+            int flag=0;
+            while(rs.next())
+            {
+                flag=1;
+                symptoms+=rs.getString(2)+"\n";
+            }
+            if(flag==0)
+            {
+                JOptionPane.showMessageDialog(rootPane,"No Symptoms found for this Record. Please enter symptoms first.");
+            }
+            symptomTa.setText(symptoms);
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void start()
     {
-        recordId=JOptionPane.showInputDialog("Enter Record Id.");
+        recordId=Info.selectedRecordId;
         try
         {
             Connection myConn=null;

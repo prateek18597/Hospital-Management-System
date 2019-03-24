@@ -13,5 +13,7 @@ public abstract class Info {
     static String user="root";
     static String pass="1111";
     static String currentUserId;
-    
+    static String UserId="";
+    static String Type="";
+    static String selectedRecordId="";
 }
