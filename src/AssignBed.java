@@ -92,6 +92,11 @@ public class AssignBed extends javax.swing.JFrame {
         });
 
         homeBtn.setText("Home");
+        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBtnActionPerformed(evt);
+            }
+        });
 
         exitBtn.setText("Exit");
         exitBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -209,6 +214,7 @@ public class AssignBed extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Entry Completed.");
             stat.close();
             conn.close();
+            resetBtn.doClick();
         }
         catch(Exception e)
         {
@@ -217,8 +223,22 @@ public class AssignBed extends javax.swing.JFrame {
     }//GEN-LAST:event_assignBtnActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-RecordId=JOptionPane.showInputDialog("Enter RecordId");        // TODO add your handling code here:
+    RecordId=JOptionPane.showInputDialog("Enter RecordId");        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
+
+    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
+        // TODO add your handling code here:
+        if(Info.Type.equals("Admin"))
+        {
+            this.dispose();
+            new AdminHome().setVisible(true);
+        }
+        else
+        {
+            this.dispose();
+            new DoctorHome().setVisible(true);
+        } 
+    }//GEN-LAST:event_homeBtnActionPerformed
 
     /**
      * @param args the command line arguments

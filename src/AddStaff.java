@@ -149,7 +149,7 @@ public class AddStaff extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(maleRb)
-                        .addGap(64, 64, 64)
+                        .addGap(62, 62, 62)
                         .addComponent(femaleRb))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(roomTf)
@@ -210,11 +210,12 @@ public class AddStaff extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(roomTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(maleRb)
-                    .addComponent(femaleRb)))
+                    .addComponent(femaleRb))
+                .addContainerGap())
         );
 
         jButton1.setText("Add Staff");
@@ -321,7 +322,18 @@ public class AddStaff extends javax.swing.JFrame {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.reset();
+        typeCb.setSelectedIndex(0);
+        firstnameTf.setText(null);
+        lastnameTf.setText(null);
+        contactnumberTf.setText(null);
+        deptTf.setText(null);
+        workingdayList.setSelectedIndices(null);
+        startHourSpinner.setValue(0);
+        startMinSpinner.setValue(0);
+        endHourSpinner.setValue(0);
+        roomTf.setText(null);
+        endMinSpinner.setValue(0);
+        maleRb.setSelected(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -369,8 +381,8 @@ public class AddStaff extends javax.swing.JFrame {
             String query="insert into Staff values('S"+count+"','"+firstname+"','"+lastname+"','"+type+"','"+dept+"','"+contactnumber+"','"+room+"','"+startTime+"','"+endTime+"','"+Days+"','No','"+gender+"')";
             System.out.println(query);
             int status=stat.executeUpdate(query);
-            JOptionPane.showMessageDialog(rootPane, "User Added Successfully.");
-            this.reset();
+            JOptionPane.showMessageDialog(rootPane, "Staff Added Successfully.");
+//            this.reset();
         }
         catch(Exception e)
         {
@@ -381,7 +393,7 @@ public class AddStaff extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         new AdminHome().setVisible(true);
-        this.setVisible(false);
+        this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 

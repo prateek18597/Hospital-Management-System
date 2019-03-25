@@ -119,6 +119,11 @@ public class ReleaseBed extends javax.swing.JFrame {
         });
 
         homeBtn.setText("Home");
+        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBtnActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Select");
 
@@ -279,12 +284,26 @@ public class ReleaseBed extends javax.swing.JFrame {
             }
             stat.executeUpdate(query);
             JOptionPane.showMessageDialog(rootPane, "Bed Released Successfully.");
+            clearBtn.doClick();
         }
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
     }//GEN-LAST:event_releaseBtnActionPerformed
+
+    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
+if(Info.Type.equals("Admin"))
+        {
+            this.dispose();
+            new AdminHome().setVisible(true);
+        }
+        else
+        {
+            this.dispose();
+            new DoctorHome().setVisible(true);
+        }         // TODO add your handling code here:
+    }//GEN-LAST:event_homeBtnActionPerformed
 
     /**
      * @param args the command line arguments

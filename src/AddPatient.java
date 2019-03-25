@@ -268,6 +268,8 @@ public class AddPatient extends javax.swing.JFrame {
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Appoint a Doctor?","Yes",dialogButton);
             if(dialogResult == JOptionPane.YES_OPTION){
+                this.dispose();
+                new EnterSymptoms().setVisible(true);
                 System.out.println("Switch to Appoint Doctor Page.");
             }
             this.reset();

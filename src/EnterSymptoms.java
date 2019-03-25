@@ -210,7 +210,7 @@ public class EnterSymptoms extends javax.swing.JFrame {
             }
             String doctorId=((String)availableDoctersCb.getSelectedItem()).split(",")[1];
             stat2.executeUpdate("Insert into RecordDoctor values('"+recordId+"','"+doctorId+"')");
-            JOptionPane.showMessageDialog(rootPane,"You can now see the doctor.");
+            JOptionPane.showMessageDialog(rootPane,"Your RecordId is "+recordId+". You can now see the doctor.");
             this.dispose();
             new AdminHome().setVisible(true);
         }
