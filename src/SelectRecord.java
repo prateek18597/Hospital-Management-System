@@ -283,12 +283,12 @@ public class SelectRecord extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(Info.Type.equals("Admin"))
         {
-            new LibHome().setVisible(true);
+            new AdminHome().setVisible(true);
             this.dispose();
         }
         else
         {
-            new UserHome().setVisible(true);
+            new DoctorHome().setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_homeBtnActionPerformed

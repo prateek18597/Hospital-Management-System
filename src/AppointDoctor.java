@@ -611,7 +611,7 @@ public class AppointDoctor extends javax.swing.JFrame {
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
     
         this.dispose();
-        new LibHome().setVisible(true);
+        new AdminHome().setVisible(true);
 // TODO add your handling code here:
     }//GEN-LAST:event_homeBtnActionPerformed
 

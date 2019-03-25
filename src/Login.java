@@ -85,7 +85,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("LMS");
+        jLabel3.setText("Hospital Management System");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -128,12 +128,12 @@ public class Login extends javax.swing.JFrame {
                 Info.Type=rs.getString(1);
                 if(Info.Type.equalsIgnoreCase("Admin"))
                 {
-                    new LibHome().setVisible(true);
+                    new AdminHome().setVisible(true);
                     this.dispose();
                 }
                 else
                 {
-                    new UserHome().setVisible(true);
+                    new DoctorHome().setVisible(true);
                     this.dispose();
                 }
             }

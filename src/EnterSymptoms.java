@@ -212,7 +212,7 @@ public class EnterSymptoms extends javax.swing.JFrame {
             stat2.executeUpdate("Insert into RecordDoctor values('"+recordId+"','"+doctorId+"')");
             JOptionPane.showMessageDialog(rootPane,"You can now see the doctor.");
             this.dispose();
-            new LibHome().setVisible(true);
+            new AdminHome().setVisible(true);
         }
         catch(Exception e)
         {
@@ -257,7 +257,7 @@ public class EnterSymptoms extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        new LibHome().setVisible(true);
+        new AdminHome().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

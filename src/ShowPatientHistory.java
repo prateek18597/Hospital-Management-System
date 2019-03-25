@@ -230,12 +230,12 @@ public class ShowPatientHistory extends javax.swing.JFrame {
         if(Info.Type.equals("Admin"))
         {
             this.dispose();
-            new LibHome().setVisible(true);
+            new AdminHome().setVisible(true);
         }
         else
         {
             this.dispose();
-            new UserHome().setVisible(true);
+            new DoctorHome().setVisible(true);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_homeBtnActionPerformed
 

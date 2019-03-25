@@ -346,12 +346,12 @@ public class ShowPatients extends javax.swing.JFrame {
         if(Info.currentUserId.equals("U1"))
         {
             this.dispose();
-            new LibHome().setVisible(true);
+            new AdminHome().setVisible(true);
         }
         else
         {
             this.dispose();
-            new UserHome().setVisible(true);
+            new DoctorHome().setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
