@@ -101,7 +101,7 @@ public class ShowStaff extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("EnviroD", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("EnviroD", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Staff's Info");
         jLabel1.setOpaque(true);
