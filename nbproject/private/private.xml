@@ -5,13 +5,22 @@
         <group>
             <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/Info.java</file>
             <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/AssignBed.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/Doctor.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/AppointDoctor.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ShowDocStatus.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ShowRecords.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/AddBed.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ShowBedRecords.java</file>
             <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/SelectRecord.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ShowAppointments.java</file>
             <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/LibHome.java</file>
             <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/AddPatient.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/Search.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ShowStaff.java</file>
             <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/Login.java</file>
-            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/AppointDoctor.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ShowPatients.java</file>
+            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ShowPatientHistory.java</file>
             <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/ReleaseBed.java</file>
-            <file>file:/home/pratik/Documents/Hospital%20Management%20System/src/AddBed.java</file>
         </group>
     </open-files>
 </project-private>
