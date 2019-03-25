@@ -214,6 +214,16 @@ public class Doctor extends javax.swing.JFrame {
 
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
         // TODO add your handling code here:
+        if(Info.Type.equals("Admin"))
+        {
+            this.dispose();
+            new LibHome().setVisible(true);
+        }
+        else
+        {
+            this.dispose();
+            new UserHome().setVisible(true);
+        }
     }//GEN-LAST:event_homeBtnActionPerformed
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
