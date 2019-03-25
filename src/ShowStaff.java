@@ -1,3 +1,11 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -171,6 +179,7 @@ public class ShowStaff extends javax.swing.JFrame {
         });
 
         typeCb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Consultant", "Nurse", "Intern" }));
+        typeCb.setEnabled(false);
 
         deptCb.setText("Dept");
         deptCb.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -201,9 +210,8 @@ public class ShowStaff extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(idCb)
@@ -236,14 +244,16 @@ public class ShowStaff extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(deptTf, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(roomTf, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(roomTf, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 64, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(245, 245, 245)
+                        .addGap(276, 276, 276)
                         .addComponent(cmdExit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,11 +320,11 @@ public class ShowStaff extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(typeCB.isSelected())
         {
-            jSpinner1.setEnabled(true);
+            typeCb.setEnabled(true);
         }
         else
         {
-            jSpinner1.setEnabled(false);
+            typeCb.setEnabled(false);
         }
     }//GEN-LAST:event_typeCBStateChanged
 
@@ -348,7 +358,7 @@ public class ShowStaff extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(Info.currentUserId.equals("U1"))
+        if(Info.Type.equals("Admin"))
         {
             this.dispose();
             new LibHome().setVisible(true);
@@ -368,16 +378,15 @@ public class ShowStaff extends javax.swing.JFrame {
                 model.removeRow(0);
             }
         }
-        String query = "Select Id,concat(FirstName,' ',LastName),Age,Gender,ContactNo From Patient ";
+        String query = "Select Id,concat(FirstName,' ',LastName),Type,Gender,ContactNo,Dept,concat(StartTime,'-',EndTime),Days,Availability,Room From Staff ";
         Boolean last=false;
-        int f=0;
         if(idCb.isSelected())
         {
             if(last)
             query+=" and ";
             else
             query+=" where ";
-            query+=" Id like '"+idTf.getText()+"%'";
+            query+=" Id like '%"+idTf.getText()+"%'";
             last=true;
         }
         if(nameCb.isSelected())
@@ -386,7 +395,7 @@ public class ShowStaff extends javax.swing.JFrame {
             query+=" and ";
             else
             query+=" where ";
-            query+=" concat(FirstName,' ',LastName) like'"+nameTf.getText()+"%' ";
+            query+=" concat(FirstName,' ',LastName) like'%"+nameTf.getText()+"%' ";
             last=true;
         }
         if(typeCB.isSelected())
@@ -395,7 +404,7 @@ public class ShowStaff extends javax.swing.JFrame {
             query+=" and ";
             else
             query+=" where ";
-            query+=" Age="+jSpinner1.getValue()+" ";
+            query+=" Type='"+(String)typeCb.getSelectedItem()+"' ";
             last=true;
         }
         if(genderCb.isSelected())
@@ -416,7 +425,26 @@ public class ShowStaff extends javax.swing.JFrame {
             query+=" and ";
             else
             query+=" where ";
-            query+=" ContactNo like '"+contactTf.getText()+"%' ";
+            query+=" ContactNo like '%"+contactTf.getText()+"%' ";
+            last=true;
+        }
+        if(deptCb.isSelected())
+        {
+            if(last)
+            query+=" and ";
+            else
+            query+=" where ";
+            query+=" Dept like '%"+deptTf.getText()+"%' ";
+            last=true;
+        }
+        if(roomCb.isSelected())
+        {
+            if(last)
+            query+=" and ";
+            else
+            query+=" where ";
+            query+=" Room like '%"+roomTf.getText()+"%' ";
+            last=true;
         }
         System.out.println(query);
         try
@@ -429,13 +457,19 @@ public class ShowStaff extends javax.swing.JFrame {
 
             rs = stat.executeQuery(query);
 
-            while (rs.next()) {
+            while (rs.next()) 
+            {
                 String a1 = rs.getString(1);
                 String a2 = rs.getString(2);
                 String a3 = rs.getString(3);
                 String a4 = rs.getString(4);
                 String a5 = rs.getString(5);
-                model.addRow(new Object[] {a1,a2,a3,a4,a5});
+                String a6 = rs.getString(6);
+                String a7 = rs.getString(7);
+                String a8 = rs.getString(8);
+                String a9 = rs.getString(9);
+                String a10 = rs.getString(10);
+                model.addRow(new Object[] {a1,a2,a3,a4,a5,a6,a7,a8,a9,a10});
             }
         }
         catch (Exception e) {
@@ -450,14 +484,17 @@ public class ShowStaff extends javax.swing.JFrame {
 
     private void genderCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderCbActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_genderCbActionPerformed
 
     private void deptCbStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_deptCbStateChanged
         // TODO add your handling code here:
+        deptTf.setEnabled(deptCb.isSelected());
     }//GEN-LAST:event_deptCbStateChanged
 
     private void roomCbStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_roomCbStateChanged
         // TODO add your handling code here:
+        roomTf.setEnabled(roomCb.isSelected());
     }//GEN-LAST:event_roomCbStateChanged
 
     private void deptTfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deptTfActionPerformed

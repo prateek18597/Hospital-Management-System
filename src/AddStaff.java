@@ -40,6 +40,7 @@ public class AddStaff extends javax.swing.JFrame {
     private void initComponents() {
 
         jTextField1 = new javax.swing.JTextField();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -62,6 +63,9 @@ public class AddStaff extends javax.swing.JFrame {
         deptTf = new javax.swing.JTextField();
         roomTf = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        maleRb = new javax.swing.JRadioButton();
+        femaleRb = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -114,6 +118,15 @@ public class AddStaff extends javax.swing.JFrame {
 
         jLabel10.setText("Room");
 
+        jLabel11.setText("Gender");
+
+        buttonGroup1.add(maleRb);
+        maleRb.setSelected(true);
+        maleRb.setText("M");
+
+        buttonGroup1.add(femaleRb);
+        femaleRb.setText("F");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,24 +143,30 @@ public class AddStaff extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9)
-                    .addComponent(jLabel10))
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(roomTf)
-                    .addComponent(firstnameTf)
-                    .addComponent(typeCb, 0, 200, Short.MAX_VALUE)
-                    .addComponent(lastnameTf)
-                    .addComponent(contactnumberTf)
-                    .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(startHourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(startMinSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(endHourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(endMinSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(deptTf))
+                        .addComponent(maleRb)
+                        .addGap(64, 64, 64)
+                        .addComponent(femaleRb))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(roomTf)
+                        .addComponent(firstnameTf)
+                        .addComponent(typeCb, 0, 200, Short.MAX_VALUE)
+                        .addComponent(lastnameTf)
+                        .addComponent(contactnumberTf)
+                        .addComponent(jScrollPane1)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(startHourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(startMinSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(endHourSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(endMinSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(deptTf)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -191,7 +210,11 @@ public class AddStaff extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(roomTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(maleRb)
+                    .addComponent(femaleRb)))
         );
 
         jButton1.setText("Add Staff");
@@ -293,6 +316,7 @@ public class AddStaff extends javax.swing.JFrame {
         endHourSpinner.setValue(0);
         roomTf.setText(null);
         endMinSpinner.setValue(0);
+        maleRb.setSelected(true);
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -310,7 +334,9 @@ public class AddStaff extends javax.swing.JFrame {
        
         int startHour=(Integer)(startHourSpinner.getValue());
         int startMin=(Integer)(startMinSpinner.getValue());
-       
+        String gender="M";
+        if(femaleRb.isSelected())
+            gender="F";
         String startTime=startHour+":"+startMin+":00";
         int endHour=(Integer)(endHourSpinner.getValue());
         int endMin=(Integer)(endMinSpinner.getValue());
@@ -340,7 +366,7 @@ public class AddStaff extends javax.swing.JFrame {
                 count=Integer.parseInt(rs.getString(1));
             }
             count++;
-            String query="insert into Staff values('S"+count+"','"+firstname+"','"+lastname+"','"+type+"','"+dept+"','"+contactnumber+"','"+room+"','"+startTime+"','"+endTime+"','"+Days+"','No')";
+            String query="insert into Staff values('S"+count+"','"+firstname+"','"+lastname+"','"+type+"','"+dept+"','"+contactnumber+"','"+room+"','"+startTime+"','"+endTime+"','"+Days+"','No','"+gender+"')";
             System.out.println(query);
             int status=stat.executeUpdate(query);
             JOptionPane.showMessageDialog(rootPane, "User Added Successfully.");
@@ -404,10 +430,12 @@ public class AddStaff extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField contactnumberTf;
     private javax.swing.JTextField deptTf;
     private javax.swing.JSpinner endHourSpinner;
     private javax.swing.JSpinner endMinSpinner;
+    private javax.swing.JRadioButton femaleRb;
     private javax.swing.JTextField firstnameTf;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -415,6 +443,7 @@ public class AddStaff extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -428,6 +457,7 @@ public class AddStaff extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField lastnameTf;
+    private javax.swing.JRadioButton maleRb;
     private javax.swing.JTextField roomTf;
     private javax.swing.JSpinner startHourSpinner;
     private javax.swing.JSpinner startMinSpinner;
