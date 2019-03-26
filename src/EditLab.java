@@ -46,8 +46,6 @@ public class EditLab extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.setEditable(false);
-
         jButton1.setText("Edit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,18 +158,10 @@ public class EditLab extends javax.swing.JFrame {
         {
             myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
             stat=myConn.createStatement();
-            rs=stat.executeQuery("Select count(*) from Lab");
-            int count=0;
-            if(rs.next())
-            {
-                count=Integer.parseInt(rs.getString(1));
-            }
-
-            count++;
-            int status=stat.executeUpdate("insert into Lab values('L"+count+"','"+driverName+"')");
-            JOptionPane.showMessageDialog(rootPane, "Successfully Added Lab in Database. Lab Id is L"+count+".");
-            //            jButton3.doClick();
-            jTextField1.setText("L"+count);
+            String id=jTextField1.getText();
+            stat.executeUpdate("Delete from Lab where LabId='"+id+"'");
+            int status=stat.executeUpdate("insert into Lab values('"+id+"','"+driverName+"')");
+            JOptionPane.showMessageDialog(rootPane, "Successfully Updated Lab in Database.");
         }
         catch(Exception e)
         {
@@ -206,6 +196,25 @@ public class EditLab extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        Connection myConn=null;
+            Statement stat=null;
+            ResultSet rs=null;
+
+            try
+            {
+                myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
+                stat=myConn.createStatement();
+                String id=jTextField1.getText();
+                rs=stat.executeQuery("Select * from Lab where LabId='"+id+"'");
+                if(rs.next())
+                {
+                    jTextField2.setText(rs.getString(2));
+                }
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
