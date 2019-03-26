@@ -37,6 +37,7 @@ public class AdminHome extends javax.swing.JFrame {
         jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
+        jMenuItem25 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem18 = new javax.swing.JMenuItem();
         jMenuItem19 = new javax.swing.JMenuItem();
@@ -45,6 +46,7 @@ public class AdminHome extends javax.swing.JFrame {
         jMenuItem22 = new javax.swing.JMenuItem();
         jMenuItem23 = new javax.swing.JMenuItem();
         jMenuItem24 = new javax.swing.JMenuItem();
+        jMenuItem26 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
@@ -52,6 +54,7 @@ public class AdminHome extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem27 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -103,6 +106,9 @@ public class AdminHome extends javax.swing.JFrame {
 
         jMenuItem17.setText("Add Lab");
         jMenu1.add(jMenuItem17);
+
+        jMenuItem25.setText("Add OT");
+        jMenu1.add(jMenuItem25);
 
         jMenuBar1.add(jMenu1);
 
@@ -164,6 +170,9 @@ public class AdminHome extends javax.swing.JFrame {
         });
         jMenu6.add(jMenuItem24);
 
+        jMenuItem26.setText("Edit OT");
+        jMenu6.add(jMenuItem26);
+
         jMenuBar1.add(jMenu6);
 
         jMenu2.setText("Show");
@@ -215,6 +224,14 @@ public class AdminHome extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem11);
+
+        jMenuItem27.setText("OT Usage");
+        jMenuItem27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem27ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem27);
 
         jMenuBar1.add(jMenu2);
 
@@ -404,6 +421,12 @@ public class AdminHome extends javax.swing.JFrame {
         new EditLab().setVisible(true);
     }//GEN-LAST:event_jMenuItem24ActionPerformed
 
+    private void jMenuItem27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem27ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new ShowOTUsage().setVisible(true);
+    }//GEN-LAST:event_jMenuItem27ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -466,6 +489,9 @@ public class AdminHome extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
+    private javax.swing.JMenuItem jMenuItem25;
+    private javax.swing.JMenuItem jMenuItem26;
+    private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

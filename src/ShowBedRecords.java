@@ -34,6 +34,7 @@ public class ShowBedRecords extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -42,6 +43,10 @@ public class ShowBedRecords extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,6 +103,18 @@ public class ShowBedRecords extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 13)); // NOI18N
+        jLabel2.setText("Options");
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setSelected(true);
+        jRadioButton1.setText("Occupied");
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Vacant");
+
+        jCheckBox1.setText("Ward Wise");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -113,14 +130,28 @@ public class ShowBedRecords extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton2)
+                        .addGap(129, 129, 129)
+                        .addComponent(jCheckBox1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jCheckBox1))
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -146,7 +177,7 @@ public class ShowBedRecords extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -168,20 +199,39 @@ public class ShowBedRecords extends javax.swing.JFrame {
             Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
             Statement stat=conn.createStatement();
             ResultSet rs=null;
-            
-            String query="Select BedNo,Bed.Room,concat(Patient.FirstName,' ',Patient.LastName),concat(Staff.FirstName,' ',Staff.LastName),Disease from Bed,Record,Patient,Staff,RecordDoctor";
-            query+= " where Bed.RecordId=Record.RecordId and Record.PatientId=Patient.Id and RecordDoctor.RecordId=Record.RecordId and Staff.Id=RecordDoctor.DoctorId;";
-            rs=stat.executeQuery(query);
-            while(rs.next())
+            String query="";
+            if(jRadioButton1.isSelected())
             {
-                String a1=rs.getString(1);
-                String a2=rs.getString(2);
-                String a3=rs.getString(3);
-                String a4=rs.getString(4);
-                String a5=rs.getString(5);
-                
-                model.addRow(new Object[] {a1,a2,a3,a4,a5});
+                query="Select BedNo,Bed.Room,concat(Patient.FirstName,' ',Patient.LastName),concat(Staff.FirstName,' ',Staff.LastName),Disease from Bed,Record,Patient,Staff,RecordDoctor";
+                query+= " where Bed.RecordId=Record.RecordId and Record.PatientId=Patient.Id and RecordDoctor.RecordId=Record.RecordId and Staff.Id=RecordDoctor.DoctorId;";
+                if(jCheckBox1.isSelected())
+                    query+=" order by Bed.Room ";
+                rs=stat.executeQuery(query);
+                while(rs.next())
+                {
+                    String a1=rs.getString(1);
+                    String a2=rs.getString(2);
+                    String a3=rs.getString(3);
+                    String a4=rs.getString(4);
+                    String a5=rs.getString(5);
+
+                    model.addRow(new Object[] {a1,a2,a3,a4,a5});
+                }
             }
+            else
+            {
+                query="Select BedNo,Room from Bed where RecordId is null";
+                if(jCheckBox1.isSelected())
+                    query+=" order by Bed.Room ";
+                rs=stat.executeQuery(query);
+                while(rs.next())
+                {
+                    String a1=rs.getString(1);
+                    String a2=rs.getString(2);
+                    model.addRow(new Object[] {a1,a2});
+                }
+            }
+            
         }
         catch(Exception e)
         {
@@ -192,12 +242,14 @@ public class ShowBedRecords extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            int rows = model.getRowCount();
-            if (rows > 0) {
-                for (int i = 0; i < rows; i++) {
-                    model.removeRow(0);
-                }
+        int rows = model.getRowCount();
+        if (rows > 0) {
+            for (int i = 0; i < rows; i++) {
+                model.removeRow(0);
             }
+        }
+        jCheckBox1.setSelected(false);
+        jRadioButton1.isSelected();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -255,12 +307,17 @@ public class ShowBedRecords extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
