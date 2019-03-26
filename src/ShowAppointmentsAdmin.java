@@ -1,3 +1,11 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,12 +16,12 @@
  *
  * @author pratik
  */
-public class ShowAppointments extends javax.swing.JFrame {
+public class ShowAppointmentsAdmin extends javax.swing.JFrame {
 
     /**
      * Creates new form ShowAppointments
      */
-    public ShowAppointments() {
+    public ShowAppointmentsAdmin() {
         initComponents();
     }
 
@@ -144,14 +152,14 @@ public class ShowAppointments extends javax.swing.JFrame {
                     .addComponent(monthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(yearSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(showBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(homeBtn)
                     .addComponent(resetBtn)
                     .addComponent(exitBtn))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116))
+                .addGap(33, 33, 33))
         );
 
         pack();
@@ -173,7 +181,6 @@ public class ShowAppointments extends javax.swing.JFrame {
             ResultSet rs=null;
             myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
             stat=myConn.createStatement();
-            String staffId=((String)doctorCb.getSelectedItem()).split(",")[1];
             int s1,s2,s3;
             s1=(Integer)daySpinner.getValue();
             s2=(Integer)monthSpinner.getValue();
@@ -231,59 +238,18 @@ public class ShowAppointments extends javax.swing.JFrame {
                 break;
             }
             String date=year+"-"+month+"-"+day;
-            String query="Select * from Appointment where StaffId='"+staffId+"' and Date='"+date+"'";
+            String query="Select concat(Patient.FirstName,' ',Patient.LastName),concat(Staff.FirstName,' ',Staff.LastName),Time,Status,Duration from Appointment,Patient,Staff where Date='"+date+"' and Patient.Id=Appointment.PatientId and Staff.Id=Appointment.StaffId ";
             rs = stat.executeQuery(query);
-            while (rs.next()) {
+            while (rs.next()) 
+            {
                 String a1 = rs.getString(1);
                 String a2 = rs.getString(2);
-                model.addRow(new Object[] {a1,a2});
+                String a3 = rs.getString(3);
+                String a4 = rs.getString(4);
+                String a5 = rs.getString(5);
+                model.addRow(new Object[] {a1,a2,a3,a4,a5});
             }
-            query="Select StartTime,EndTime,Days from Staff where Id='"+staffId+"';";
-            rs = stat.executeQuery(query);
-            String workingDays="";
-            String tf3="";
-            while(rs.next())
-            {
-                jTextField1.setText(rs.getString(1));
-                jTextField2.setText(rs.getString(2));
-                workingDays=rs.getString(3);
-            }
-            if(workingDays.charAt(0)=='1')
-            {
-                tf3+="Mon,";
-            }
-            if(workingDays.charAt(1)=='1')
-            {
-                tf3+="Tue,";
-            }
-            if(workingDays.charAt(2)=='1')
-            {
-                tf3+="Wed,";
-            }
-            if(workingDays.charAt(3)=='1')
-            {
-                tf3+="Thu,";
-            }
-            if(workingDays.charAt(4)=='1')
-            {
-                tf3+="Fri,";
-            }
-            if(workingDays.charAt(5)=='1')
-            {
-                tf3+="Sat,";
-            }
-            if(workingDays.charAt(6)=='1')
-            {
-                tf3+="Sun";
-            }
-            if(tf3.charAt(tf3.length()-1)==',')
-            {
-                jTextField3.setText(tf3.substring(0, tf3.length()-1));
-            }
-            else
-            {
-                jTextField3.setText(tf3);
-            }
+            
         }
         catch(Exception e)
         {
@@ -293,11 +259,15 @@ public class ShowAppointments extends javax.swing.JFrame {
 
     private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
         // TODO add your handling code here:
-        doctorCb.setSelectedIndex(0);
-        timeHourSpinner.setValue(0);
-        timeMinSpinner.setValue(0);
-        durationHourSpinner.setValue(0);
-        durationMinSpinner.setValue(0);
+        DefaultTableModel model = (DefaultTableModel) scheduleTable.getModel();
+        int rows = model.getRowCount();
+        if(rows>0) 
+        {
+            for(int i=0;i<rows;i++)
+            {
+                model.removeRow(0);
+            }
+        }
         daySpinner.setValue(1);
         monthSpinner.setValue(1);
         yearSpinner.setValue(2019);
@@ -332,20 +302,21 @@ public class ShowAppointments extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ShowAppointments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowAppointmentsAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ShowAppointments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowAppointmentsAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ShowAppointments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowAppointmentsAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ShowAppointments.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ShowAppointmentsAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ShowAppointments().setVisible(true);
+                new ShowAppointmentsAdmin().setVisible(true);
             }
         });
     }

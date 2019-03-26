@@ -382,6 +382,8 @@ public class AddStaff extends javax.swing.JFrame {
             System.out.println(query);
             int status=stat.executeUpdate(query);
             JOptionPane.showMessageDialog(rootPane, "Staff Added Successfully.");
+            query="Insert into Login values('S"+count+"','"+firstname+"','Staff')";
+            stat.executeUpdate(query);
 //            this.reset();
         }
         catch(Exception e)
