@@ -195,8 +195,8 @@ public class EditDriver extends javax.swing.JFrame {
             myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
             stat=myConn.createStatement();
             String id=jTextField1.getText();
-            stat.executeUpdate("Delete from Driver where DriverID='"+id+"'");
-            int status=stat.executeUpdate("insert into Driver values('"+id+"','"+driverName+"','"+dl+"','"+address+"','"+contact+"')");
+            String query="Update Driver set DriverName='"+driverName+"',DL='"+dl+"',Address='"+address+"',ContactNo='"+contact+"' where DriverID='"+id+"'";
+            int status=stat.executeUpdate(query);
             JOptionPane.showMessageDialog(rootPane, "Successfully Updated Driver in Database.");
         }
         catch(Exception e)

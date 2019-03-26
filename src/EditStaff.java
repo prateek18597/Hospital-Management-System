@@ -320,11 +320,8 @@ public class EditStaff extends javax.swing.JFrame {
         {
             myConn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
             stat=myConn.createStatement();
-            String q="Delete from Staff where Id='"+id+"'";
+            String q="Update Staff set FirstName='"+firstname+"',LastName='"+lastname+"',Type='"+type+"',Dept='"+dept+"',ContactNo='"+contactnumber+"',Room='"+room+"',StartTime='"+startTime+"',EndTime='"+endTime+"',Days='"+Days+"',Gender='"+gender+"' where Id='"+id+"'";
             stat.executeUpdate(q);
-            String query="insert into Staff values('"+id+"','"+firstname+"','"+lastname+"','"+type+"','"+dept+"','"+contactnumber+"','"+room+"','"+startTime+"','"+endTime+"','"+Days+"','No','"+gender+"')";
-            System.out.println(query);
-            int status=stat.executeUpdate(query);
             JOptionPane.showMessageDialog(rootPane, "Staff Updated Successfully.");
         }
         catch(Exception e)
