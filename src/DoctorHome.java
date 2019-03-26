@@ -1,3 +1,9 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -42,6 +48,7 @@ public class DoctorHome extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(java.awt.Color.cyan);
@@ -136,7 +143,7 @@ public class DoctorHome extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Prescription");
+        jMenu4.setText("Treatment");
 
         jMenuItem3.setText("Create Prescription");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -145,6 +152,14 @@ public class DoctorHome extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem3);
+
+        jMenuItem7.setText("Treatment Complete");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem7);
 
         jMenuBar1.add(jMenu4);
 
@@ -230,6 +245,23 @@ public class DoctorHome extends javax.swing.JFrame {
         new Doctor().setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        String recordId=JOptionPane.showInputDialog("Enter RecordId.");
+        try
+        {
+            Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/HMS_0049",Info.user,Info.pass);
+            Statement stmt=conn.createStatement();
+            String query="Update Record set Status='Completed' where RecordId='"+recordId+"'";
+            stmt.executeUpdate(query);
+            JOptionPane.showMessageDialog(rootPane,"Treatment marked Completed for Record "+recordId);
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -282,6 +314,7 @@ public class DoctorHome extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     // End of variables declaration//GEN-END:variables
 }
